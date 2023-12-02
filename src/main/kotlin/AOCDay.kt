@@ -35,8 +35,11 @@ class AOCDay(val number: Int) {
      */
     val inputInts get() = inputLines.map { it.toInt() }
 
-    private var part1: (() -> Any)? = null
-    private var part2: (() -> Any)? = null
+    private var part1: ((Int) -> Any)? = null
+    private var part2: ((Int) -> Any)? = null
+
+
+    var separateInputs: Boolean? = null
 
     /**
      * Test result of [part1]
@@ -55,31 +58,37 @@ class AOCDay(val number: Int) {
     /**
      *  First part of the Day
      */
-    fun part1(function: () -> Any) {
+    fun part1(function: (Int) -> Any) {
         part1 = function
     }
 
     /**
      * Second part of the Day
      */
-    fun part2(function: () -> Any) {
+    fun part2(function: (Int) -> Any) {
         part2 = function
     }
 
-    private fun runTest(part: Int, block: (() -> Any?)?, expected: Any?) {
-        inputString = this::class.java.getResourceAsStream(inputFileName("_test"))!!.bufferedReader().readText()
+    fun bothParts(function: (Int) -> Any) {
+        part1 = function
+        part2 = function
+    }
+
+
+    private fun runTest(part: Int, block: ((Int) -> Any?)?, expected: Any?) {
+        inputString = this::class.java.getResourceAsStream(inputFileName("_test${if (separateInputs == true) "_$part" else ""}"))!!.bufferedReader().readText()
         t.println("Running test on part $part...")
-        var testResult = block?.invoke()
+        var testResult = block?.invoke(part)
         if (testResult != expected) {
             t.println(red("${bold("Part $part:")} Expected ${bold("$expected")} but got ${bold("$testResult")}"))
         }
         t.println("Part $part: Test passed")
     }
 
-    private fun runPart(part: Int, block: (() -> Any?)?) {
+    private fun runPart(part: Int, block: ((Int) -> Any?)?) {
         inputString = this::class.java.getResourceAsStream(inputFileName())!!.bufferedReader().readText()
         t.println("Running part $part...")
-        var result = block?.invoke()
+        var result = block?.invoke(part)
         t.println("Part $part: $result")
     }
 
