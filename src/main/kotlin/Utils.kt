@@ -1,5 +1,5 @@
 
-fun List<String>.splitByEntry( entry: String): List<List<String>> {
+fun List<String>.splitByEntry(entry: String): List<List<String>> {
     val result = mutableListOf<List<String>>()
     var currentList = mutableListOf<String>()
 
